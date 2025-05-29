@@ -123,14 +123,10 @@ To use custom datasets:
 The algorithm produces:
 1. Node prices reflecting structural importance
 2. Substitutability scores (lower = more unique)
-3. Criticality scores (higher = more indispensable
+3. Criticality scores (higher = more indispensable)
 
 Example output distribution for sparse vs. dense graphs:
 - **Sparse graphs**: Wider price distribution
 - **Dense graphs**: More concentrated prices
 
-![Pricing Distribution](results/pricing_distribution.png)
 
-
-## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
