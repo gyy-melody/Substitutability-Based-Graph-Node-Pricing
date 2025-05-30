@@ -19,12 +19,12 @@ pip install networkx numpy tqdm
 ## Repository Structure
 ```
 graph-node-pricing/
-├── dominator.py             # Dominator tree construction
-├── similarity.py            # Path similarity and pricing calculation
-├── datasets/                # Sample graph datasets
-│   ├── college_msg.txt      # CollegeMsg dataset
-│   └── etc.                 # Other datasets
-├── results/                 # Output directory for results
+├── dominator_tree.py             # Dominator tree construction
+├── path_similarity.py            # Path similarity and pricing calculation
+├── datasets/                     # Sample graph datasets
+│   ├── college_msg.txt           # Input dataset
+│   └── etc.                      # Other datasets
+├── results/                      # Output directory for results
 ├── LICENSE
 └── README.md
 ```
@@ -39,23 +39,18 @@ Implements the Lengauer-Tarjan algorithm to convert directed graphs into dominat
 
 ### Usage:
 ```python
-from dominator import build_dominator_tree
-
-# Load your directed graph (NetworkX DiGraph)
-graph = nx.read_edgelist("datasets/college_msg.txt", create_using=nx.DiGraph)
+from dominator_tree import compute_doms
 
 # Build dominator tree with root node '0'
-dom_tree = build_dominator_tree(graph, root='0')
+dom_tree = compute_doms(input_file, output_file)
 
-# Save dominator tree to file
-nx.write_edgelist(dom_tree, "results/college_msg_dominator.edgelist")
 ```
 
 ### Output:
 - Dominator tree as a NetworkX DiGraph
 - Tree structure stored in edge list format
 
-## 2. Path Similarity & Node Pricing (`path_similarity.py`)
+## 2. Path Similarity (`path_similarity.py`)
 Computes node similarity metrics for basic prices using dominator trees.
 
 ### Key Metrics:
@@ -66,13 +61,13 @@ Computes node similarity metrics for basic prices using dominator trees.
 
 ### Usage:
 ```python
-from similarity import calculate_node_prices
+from path_similarity import calculate_overlap
 
 # Load dominator tree
 dom_tree = nx.read_edgelist("results/college_msg_dominator.edgelist", create_using=nx.DiGraph)
 
 # Calculate node prices
-prices = calculate_node_prices(dom_tree, root='0', epsilon=1e-6)
+prices = calculate_overlap(dom_tree)
 
 # Save results
 import json
@@ -95,7 +90,7 @@ JSON file containing:
     "1": 0.356,
     ...
   },
-  "criticality_scores": {
+  "pathsimilarity_scores": {
     "0": 0.312,
     "1": 0.278,
     ...
@@ -112,11 +107,19 @@ Sample datasets are provided in the `datasets/` directory:
 
 2. **Email-Eu-core** (1,005 nodes, 25,571 edges):
    - Email communication network
-   - Source: Leskovec et al. (2007)
+   - Source: SNAP Dataset Collection
+  
+3. **Google+** (1,651 nodes, 166,292 edges):
+   - Social network
+   - Source: SNAP Dataset Collection
+
+4. **Twitter** (475 nodes, 13,289 edges):
+   - Interaction network
+   - Source: SNAP Dataset Collection
 
 To use custom datasets:
-1. Format as edge list: `source_node,target_node`
-2. Place in `datasets/` directory
+1. Format as edge list: `begin_node, end_node`
+2. Place in `dataset/` directory
 3. Update file path in scripts
 
 ## Experimental Results
