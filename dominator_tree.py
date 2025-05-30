@@ -115,5 +115,5 @@ print(f"运行时间：{running_time} 秒")
 
 
 # Call the function with the input and output file paths
-compute_doms('C:/Users/ASUS/PycharmProjects/untitled/AAApost/弹性/10-graph.txt', 'C:/Users/ASUS/PycharmProjects/untitled/AAApost/弹性/10-d_tree.txt')
+compute_doms('./dataset/input.txt', './dataset/output.txt')
 
